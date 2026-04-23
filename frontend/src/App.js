@@ -24,7 +24,6 @@ function App() {
   return (
     <div>
       <h1>My Portfolio</h1>
-
       <section>
         <h2>Projects</h2>
         {projects.map(p => (
@@ -39,9 +38,9 @@ function App() {
       <section>
         <h2>Contact</h2>
         <form onSubmit={handleSubmit}>
-          <input placeholder="Name" onChange={e => setForm({ ...form, name: e.target.value })} />
-          <input placeholder="Email" onChange={e => setForm({ ...form, email: e.target.value })} />
-          <textarea placeholder="Message" onChange={e => setForm({ ...form, message: e.target.value })}></textarea>
+          <input placeholder="Name" onChange={e => setForm({...form, name:e.target.value})} />
+          <input placeholder="Email" onChange={e => setForm({...form, email:e.target.value})} />
+          <textarea placeholder="Message" onChange={e => setForm({...form, message:e.target.value})}></textarea>
           <button type="submit">Send</button>
         </form>
       </section>
