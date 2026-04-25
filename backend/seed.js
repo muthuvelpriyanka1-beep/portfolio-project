@@ -17,6 +17,7 @@ const ProjectSchema = new mongoose.Schema({
   githubLink: String,
   liveLink: String,
   image: String,
+  impact: String,
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -27,81 +28,114 @@ const SkillSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+const AchievementSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: String,
+  category: String,
+  date: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
+const CertificateSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  organization: String,
+  date: String,
+  description: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
 // Define Models
 const Project = mongoose.model('Project', ProjectSchema);
 const Skill = mongoose.model('Skill', SkillSchema);
+const Achievement = mongoose.model('Achievement', AchievementSchema);
+const Certificate = mongoose.model('Certificate', CertificateSchema);
 
-// Sample Projects Data
+// Sample Projects Data - Priyanka's Projects
 const sampleProjects = [
   {
-    title: "Portfolio Website",
-    description: "A full-stack personal portfolio website showcasing projects, skills, and contact information with React frontend and Node.js backend.",
-    technologies: ["React", "Node.js", "Express", "MongoDB", "CSS3"],
-    githubLink: "https://github.com/muthuvelpriyanka1-beep/portfolio-project",
-    liveLink: "https://portfolio-project-kkhq.vercel.app",
-    image: "https://via.placeholder.com/400x250?text=Portfolio+Website"
-  },
-  {
-    title: "E-commerce Platform",
-    description: "A full-featured e-commerce platform with product catalog, shopping cart, and payment integration using Stripe.",
-    technologies: ["React", "Node.js", "MongoDB", "Stripe", "Redux"],
-    githubLink: "https://github.com/example/ecommerce",
-    liveLink: "https://ecommerce-example.vercel.app",
-    image: "https://via.placeholder.com/400x250?text=E-commerce+Platform"
-  },
-  {
-    title: "Task Management App",
-    description: "A collaborative task management application with real-time updates, user authentication, and team workspaces.",
-    technologies: ["React", "Firebase", "Tailwind CSS", "JavaScript"],
-    githubLink: "https://github.com/example/task-manager",
-    liveLink: "https://task-manager-app.vercel.app",
-    image: "https://via.placeholder.com/400x250?text=Task+Manager"
-  },
-  {
-    title: "Weather Dashboard",
-    description: "A responsive weather dashboard that displays current weather, forecasts, and allows users to search multiple cities.",
-    technologies: ["React", "OpenWeather API", "Axios", "Chart.js"],
-    githubLink: "https://github.com/example/weather-app",
-    liveLink: "https://weather-dashboard-app.vercel.app",
-    image: "https://via.placeholder.com/400x250?text=Weather+Dashboard"
-  },
-  {
-    title: "Social Media Analytics",
-    description: "Analytics dashboard for social media performance tracking with real-time data visualization and insights.",
-    technologies: ["React", "D3.js", "Node.js", "PostgreSQL"],
-    githubLink: "https://github.com/example/social-analytics",
-    liveLink: "https://social-analytics-dash.vercel.app",
-    image: "https://via.placeholder.com/400x250?text=Social+Analytics"
+    title: "Smart Aviation Management System",
+    description: "Developed a web application to manage flight bookings and passenger records using a secure database. Simplifies the ticket booking process and ensures data security for travelers.",
+    technologies: ["HTML", "CSS", "JavaScript", "Python"],
+    impact: "Streamlines flight ticket booking and protects traveler data with secure database management",
+    image: "https://via.placeholder.com/400x250?text=Aviation+Management"
   }
 ];
 
-// Sample Skills Data
+// Sample Skills Data - Priyanka's Skills
 const sampleSkills = [
-  // Frontend
-  { name: "React", proficiency: 90, category: "Frontend" },
-  { name: "JavaScript", proficiency: 95, category: "Frontend" },
-  { name: "HTML5", proficiency: 95, category: "Frontend" },
-  { name: "CSS3", proficiency: 90, category: "Frontend" },
-  { name: "Tailwind CSS", proficiency: 85, category: "Frontend" },
-  { name: "Redux", proficiency: 80, category: "Frontend" },
+  // Web Technologies
+  { name: "HTML", proficiency: 90, category: "Web Technologies" },
+  { name: "CSS", proficiency: 90, category: "Web Technologies" },
+  { name: "JavaScript", proficiency: 85, category: "Web Technologies" },
   
-  // Backend
-  { name: "Node.js", proficiency: 90, category: "Backend" },
-  { name: "Express.js", proficiency: 90, category: "Backend" },
-  { name: "Python", proficiency: 75, category: "Backend" },
-  { name: "API Development", proficiency: 88, category: "Backend" },
+  // Programming
+  { name: "Python", proficiency: 80, category: "Programming" },
   
-  // Database
-  { name: "MongoDB", proficiency: 85, category: "Database" },
-  { name: "MySQL", proficiency: 80, category: "Database" },
-  { name: "PostgreSQL", proficiency: 75, category: "Database" },
+  // Design Tools
+  { name: "Figma", proficiency: 85, category: "Design Tools" },
+  { name: "UI/UX Design", proficiency: 85, category: "Design Tools" },
+  { name: "Canva", proficiency: 80, category: "Design Tools" },
   
-  // Tools & Others
-  { name: "Git & GitHub", proficiency: 90, category: "Tools" },
-  { name: "Docker", proficiency: 70, category: "Tools" },
-  { name: "Postman", proficiency: 85, category: "Tools" },
-  { name: "Problem Solving", proficiency: 92, category: "Others" },
-  { name: "Agile/Scrum", proficiency: 80, category: "Others" }
+  // Soft Skills
+  { name: "Leadership", proficiency: 85, category: "Soft Skills" },
+  { name: "Communication", proficiency: 90, category: "Soft Skills" },
+  { name: "Problem Solving", proficiency: 88, category: "Soft Skills" }
+];
+
+// Achievements Data - Priyanka's Awards & Achievements
+const sampleAchievements = [
+  {
+    title: "Academic Excellence",
+    description: "Secured 2nd Rank in I-MSc Computer Science at Vivekanandha Educational Institutions",
+    category: "Academic",
+    date: "2024"
+  },
+  {
+    title: "Workshop Speaker",
+    description: "Led a hands-on seminar on UI/UX Design in Figma at VICAS",
+    category: "Workshop",
+    date: "2024"
+  },
+  {
+    title: "CS250 Certification",
+    description: "Completed Python for Data Science from Saylor University",
+    category: "Certification",
+    date: "2024"
+  },
+  {
+    title: "NSS Volunteer",
+    description: "Participated in a 7-day Rural Development Camp for community service",
+    category: "Community Service",
+    date: "2024"
+  }
+];
+
+// Certificates Data - Priyanka's Certifications
+const sampleCertificates = [
+  {
+    title: "Python Programming Intern",
+    organization: "Durga Tech, Erode",
+    date: "May 2024 - June 2024",
+    description: "Python Programming Internship"
+  },
+  {
+    title: "Seminar: Impact of AI in the Future",
+    organization: "Kodaikanal Christian College",
+    date: "2024",
+    description: "Attended a seminar on the Impact of AI in the Future"
+  },
+  {
+    title: "Paper Presentation: AI in Social Media",
+    organization: "National Level Conference",
+    date: "2024",
+    description: "Presented a paper on Artificial Intelligence in Social Media"
+  },
+  {
+    title: "Google Cloud Computing",
+    organization: "NPTEL",
+    date: "2024",
+    description: "Successfully completed an NPTEL online course on Google Cloud Computing"
+  }
 ];
 
 // Function to seed data
@@ -110,6 +144,8 @@ async function seedDatabase() {
     // Clear existing data
     await Project.deleteMany({});
     await Skill.deleteMany({});
+    await Achievement.deleteMany({});
+    await Certificate.deleteMany({});
     console.log("🗑️  Cleared existing data");
 
     // Insert projects
@@ -120,9 +156,19 @@ async function seedDatabase() {
     await Skill.insertMany(sampleSkills);
     console.log("✅ Skills added:", sampleSkills.length);
 
+    // Insert achievements
+    await Achievement.insertMany(sampleAchievements);
+    console.log("✅ Achievements added:", sampleAchievements.length);
+
+    // Insert certificates
+    await Certificate.insertMany(sampleCertificates);
+    console.log("✅ Certificates added:", sampleCertificates.length);
+
     console.log("\n🎉 Database seeded successfully!");
     console.log("📊 Total Projects:", await Project.countDocuments());
     console.log("📊 Total Skills:", await Skill.countDocuments());
+    console.log("📊 Total Achievements:", await Achievement.countDocuments());
+    console.log("📊 Total Certificates:", await Certificate.countDocuments());
 
     process.exit(0);
   } catch (error) {
