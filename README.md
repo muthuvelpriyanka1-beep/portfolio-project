@@ -27,6 +27,13 @@ npm run seed
 
 > Important: run this against the same MongoDB URI used by your deployed backend.
 
+
+## Frontend Environment Files
+
+- `frontend/.env.development` is used for local development (`http://localhost:5000`).
+- `frontend/.env` intentionally leaves `REACT_APP_API` empty so production does **not** accidentally call localhost.
+- In Vercel, set `REACT_APP_API` in Project Settings → Environment Variables.
+
 ## Deployment Notes (Render + Vercel)
 
 1. Set `MONGO_URI` in Render backend environment variables.

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { buildApiUrl } from '../api';
 import '../styles/Projects.css';
 
 function Projects() {
@@ -9,7 +10,7 @@ function Projects() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API}/api/projects`);
+        const response = await fetch(buildApiUrl('/api/projects'));
         if (!response.ok) throw new Error('Failed to fetch projects');
         const data = await response.json();
         setProjects(data);
