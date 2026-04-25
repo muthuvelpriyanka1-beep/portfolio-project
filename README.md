@@ -45,3 +45,19 @@ npm run seed
 4. Redeploy frontend after setting env vars.
 
 If `REACT_APP_API` is missing or points to localhost, frontend requests will fail in production.
+
+
+## Debugging data issues
+
+If seeded data is not visible in frontend:
+
+1. Open backend health endpoint:
+   - `GET /api/health`
+2. Temporarily enable debug logs in backend env:
+   - `DEBUG_LOGS=true`
+3. Check debug DB stats endpoint:
+   - `GET /api/debug/db-stats`
+4. In browser devtools console, verify `[API DEBUG]` logs and request URL.
+
+> Note: Home section content is static. Seeded MongoDB data appears in **Skills** and **Projects** sections.
+

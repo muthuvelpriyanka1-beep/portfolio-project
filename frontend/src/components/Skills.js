@@ -13,6 +13,7 @@ function Skills() {
         const response = await fetch(buildApiUrl('/api/skills'));
         if (!response.ok) throw new Error('Failed to fetch skills');
         const data = await response.json();
+        console.log('[Skills DEBUG] fetched skills:', data.length);
         setSkills(data);
       } catch (err) {
         setError(err.message);

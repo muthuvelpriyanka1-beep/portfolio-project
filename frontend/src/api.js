@@ -21,10 +21,17 @@ const normalizeApiBase = () => {
 
 export const API_BASE = normalizeApiBase();
 
+if (typeof window !== 'undefined') {
+  console.log('[API DEBUG] NODE_ENV:', process.env.NODE_ENV);
+  console.log('[API DEBUG] API_BASE:', API_BASE || '<missing>');
+}
+
 export const buildApiUrl = (path) => {
   if (!API_BASE) {
     throw new Error('API is not configured. Set REACT_APP_API to your deployed backend URL.');
   }
 
-  return `${API_BASE}${path}`;
+  const fullUrl = `${API_BASE}${path}`;
+  console.log('[API DEBUG] Request URL:', fullUrl);
+  return fullUrl;
 };

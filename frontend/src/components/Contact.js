@@ -34,6 +34,7 @@ function Contact() {
       });
 
       const data = await response.json();
+      console.log('[Contact DEBUG] response:', data);
 
       if (response.ok) {
         setStatus({ type: 'success', message: 'Message sent successfully!' });

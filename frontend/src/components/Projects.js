@@ -13,6 +13,7 @@ function Projects() {
         const response = await fetch(buildApiUrl('/api/projects'));
         if (!response.ok) throw new Error('Failed to fetch projects');
         const data = await response.json();
+        console.log('[Projects DEBUG] fetched projects:', data.length);
         setProjects(data);
       } catch (err) {
         setError(err.message);
