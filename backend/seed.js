@@ -1,51 +1,55 @@
-// Achievement Schema
+require('dotenv').config();
 const mongoose = require('mongoose');
+const { projectSeedData, skillSeedData } = require('./seedData');
 
-const achievementSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    date: { type: Date, default: Date.now }
+const ProjectSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  technologies: [String],
+  githubLink: String,
+  liveLink: String,
+  image: String,
+  createdAt: { type: Date, default: Date.now }
 });
 
-const Achievement = mongoose.model('Achievement', achievementSchema);
-
-// Certificate Schema
-const certificateSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    issuedBy: { type: String, required: true },
-    dateIssued: { type: Date, default: Date.now }
+const SkillSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  proficiency: { type: Number, min: 0, max: 100 },
+  category: String,
+  createdAt: { type: Date, default: Date.now }
 });
 
-const Certificate = mongoose.model('Certificate', certificateSchema);
+const Project = mongoose.models.Project || mongoose.model('Project', ProjectSchema);
+const Skill = mongoose.models.Skill || mongoose.model('Skill', SkillSchema);
 
-// API Routes
-const express = require('express');
-const router = express.Router();
 
-// Get all achievements
-router.get('/achievements', async (req, res) => {
-    const achievements = await Achievement.find();
-    res.status(200).json(achievements);
-});
+async function seedDatabase() {
+  if (!process.env.MONGO_URI) {
+    throw new Error('MONGO_URI is missing. Please set it in your environment variables.');
+  }
 
-// Create a new achievement
-router.post('/achievements', async (req, res) => {
-    const newAchievement = new Achievement(req.body);
-    await newAchievement.save();
-    res.status(201).json(newAchievement);
-});
+  await mongoose.connect(process.env.MONGO_URI);
+  console.log('✅ MongoDB connected for seeding');
 
-// Get all certificates
-router.get('/certificates', async (req, res) => {
-    const certificates = await Certificate.find();
-    res.status(200).json(certificates);
-});
+  await Promise.all([
+    Project.deleteMany({}),
+    Skill.deleteMany({})
+  ]);
 
-// Create a new certificate
-router.post('/certificates', async (req, res) => {
-    const newCertificate = new Certificate(req.body);
-    await newCertificate.save();
-    res.status(201).json(newCertificate);
-});
+  await Promise.all([
+    Project.insertMany(projectSeedData),
+    Skill.insertMany(skillSeedData)
+  ]);
 
-module.exports = router;
+  console.log('✅ Seed completed: projects and skills inserted');
+}
+
+seedDatabase()
+  .catch((error) => {
+    console.error('❌ Seeding failed:', error.message);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await mongoose.connection.close();
+    console.log('🔌 MongoDB connection closed');
+  });
