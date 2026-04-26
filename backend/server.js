@@ -7,6 +7,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+app.use('/api', (req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+});
+
 const DEBUG_LOGS = process.env.DEBUG_LOGS === 'true';
 
 const log = (...args) => console.log(new Date().toISOString(), ...args);
@@ -73,6 +81,16 @@ const ContactSchema = new mongoose.Schema({
 const Project = mongoose.model('Project', ProjectSchema);
 const Skill = mongoose.model('Skill', SkillSchema);
 const Contact = mongoose.model('Contact', ContactSchema);
+
+
+app.get('/', (req, res) => {
+  res.status(200).json({
+    service: 'portfolio-backend',
+    status: 'running',
+    health: '/api/health',
+    endpoints: ['/api/projects', '/api/skills', '/api/contact']
+  });
+});
 
 // Basic health check
 app.get('/api/health', async (req, res) => {

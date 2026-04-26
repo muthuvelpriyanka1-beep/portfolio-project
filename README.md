@@ -59,5 +59,14 @@ If seeded data is not visible in frontend:
    - `GET /api/debug/db-stats`
 4. In browser devtools console, verify `[API DEBUG]` logs and request URL.
 
+
+5. Verify backend root URL returns JSON (not 404):
+   - `GET /`
+
+Frontend home page now includes an API debug banner that shows configured API base and backend health status.
+
 > Note: Home section content is static. Seeded MongoDB data appears in **Skills** and **Projects** sections.
+
+
+If you see `304` for `/api/projects` or `/api/skills`, that is an HTTP cache response (not server failure). APIs now return no-cache headers and frontend requests use `cache: "no-store"` to force fresh data checks.
 

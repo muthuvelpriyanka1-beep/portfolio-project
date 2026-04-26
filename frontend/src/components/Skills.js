@@ -10,7 +10,7 @@ function Skills() {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const response = await fetch(buildApiUrl('/api/skills'));
+        const response = await fetch(buildApiUrl('/api/skills'), { cache: 'no-store' });
         if (!response.ok) throw new Error('Failed to fetch skills');
         const data = await response.json();
         console.log('[Skills DEBUG] fetched skills:', data.length);
