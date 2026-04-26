@@ -28,6 +28,8 @@ function Skills() {
   if (loading) return <section className="skills"><p>Loading skills...</p></section>;
   if (error) return <section className="skills"><p>Error: {error}</p></section>;
 
+  if (skills.length === 0) return <section className="skills"><p>No skills found. Seed or add data in backend.</p></section>;
+
   const groupedSkills = skills.reduce((acc, skill) => {
     const category = skill.category || 'Other';
     if (!acc[category]) acc[category] = [];

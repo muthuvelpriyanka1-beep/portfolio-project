@@ -18,6 +18,8 @@ npm start
 
 ## Seed Data (Projects + Skills)
 
+- Backend now auto-seeds default Projects/Skills on startup **only if collections are empty**.
+
 `seed.js` now inserts data directly into the same `projects` and `skills` collections used by the frontend APIs.
 
 ```bash
@@ -26,6 +28,25 @@ npm run seed
 ```
 
 > Important: run this against the same MongoDB URI used by your deployed backend.
+
+
+### If you cannot run Node commands
+
+You can trigger seeding through the deployed backend API (no local Node needed):
+
+```bash
+curl -X POST "https://your-backend.onrender.com/api/admin/seed" \
+  -H "x-seed-key: YOUR_SEED_API_KEY"
+```
+
+To force reset/reseed:
+
+```bash
+curl -X POST "https://your-backend.onrender.com/api/admin/seed?force=true" \
+  -H "x-seed-key: YOUR_SEED_API_KEY"
+```
+
+Set `SEED_API_KEY` in Render environment variables before using this endpoint.
 
 
 ## Frontend Environment Files

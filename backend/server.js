@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const { projectSeedData, skillSeedData } = require('./seedData');
 
 const app = express();
 app.use(cors());
@@ -40,8 +41,9 @@ app.use((req, res, next) => {
 // MongoDB Connection
 log('Connecting MongoDB with URI:', maskMongoUri(process.env.MONGO_URI));
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
+  .then(async () => {
     log(`✅ MongoDB Connected (db: ${mongoose.connection.name})`);
+    await bootstrapSeedData();
   })
   .catch(err => log('❌ MongoDB Error:', err.message));
 
@@ -90,6 +92,85 @@ app.get('/', (req, res) => {
     health: '/api/health',
     endpoints: ['/api/projects', '/api/skills', '/api/contact']
   });
+});
+
+
+const seedCollections = async ({ force = false } = {}) => {
+  if (force) {
+    await Promise.all([
+      Project.deleteMany({}),
+      Skill.deleteMany({})
+    ]);
+
+    await Promise.all([
+      Project.insertMany(projectSeedData),
+      Skill.insertMany(skillSeedData)
+    ]);
+
+    return {
+      mode: 'force',
+      projects: projectSeedData.length,
+      skills: skillSeedData.length
+    };
+  }
+
+  const [projectCount, skillCount] = await Promise.all([
+    Project.countDocuments(),
+    Skill.countDocuments()
+  ]);
+
+  let insertedProjects = 0;
+  let insertedSkills = 0;
+
+  if (projectCount === 0) {
+    await Project.insertMany(projectSeedData);
+    insertedProjects = projectSeedData.length;
+    log(`🌱 Seeded ${insertedProjects} default projects because collection was empty.`);
+  }
+
+  if (skillCount === 0) {
+    await Skill.insertMany(skillSeedData);
+    insertedSkills = skillSeedData.length;
+    log(`🌱 Seeded ${insertedSkills} default skills because collection was empty.`);
+  }
+
+  return {
+    mode: 'empty-only',
+    insertedProjects,
+    insertedSkills,
+    existingProjects: projectCount,
+    existingSkills: skillCount
+  };
+};
+
+const bootstrapSeedData = async () => {
+  try {
+    await seedCollections();
+  } catch (error) {
+    log('❌ bootstrapSeedData failed:', error.message);
+  }
+};
+
+
+app.post('/api/admin/seed', async (req, res) => {
+  const providedKey = req.get('x-seed-key') || req.query.key;
+
+  if (!process.env.SEED_API_KEY) {
+    return res.status(503).json({ error: 'SEED_API_KEY is not configured on server.' });
+  }
+
+  if (providedKey !== process.env.SEED_API_KEY) {
+    return res.status(401).json({ error: 'Invalid seed key.' });
+  }
+
+  try {
+    const force = req.query.force === 'true' || req.body?.force === true;
+    const result = await seedCollections({ force });
+    return res.json({ success: true, result });
+  } catch (error) {
+    log('❌ /api/admin/seed failed:', error.message);
+    return res.status(500).json({ error: 'Failed to seed collections', details: error.message });
+  }
 });
 
 // Basic health check

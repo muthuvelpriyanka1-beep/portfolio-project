@@ -28,6 +28,8 @@ function Projects() {
   if (loading) return <section className="projects"><p>Loading projects...</p></section>;
   if (error) return <section className="projects"><p>Error: {error}</p></section>;
 
+  if (projects.length === 0) return <section className="projects"><p>No projects found. Seed or add data in backend.</p></section>;
+
   return (
     <section className="projects">
       <div className="projects-container">
