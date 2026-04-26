@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { buildApiUrl } from '../api';
 import '../styles/Skills.css';
 
 function Skills() {
@@ -9,9 +10,10 @@ function Skills() {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API}/api/skills`);
+        const response = await fetch(buildApiUrl('/api/skills'), { cache: 'no-store' });
         if (!response.ok) throw new Error('Failed to fetch skills');
         const data = await response.json();
+        console.log('[Skills DEBUG] fetched skills:', data.length);
         setSkills(data);
       } catch (err) {
         setError(err.message);

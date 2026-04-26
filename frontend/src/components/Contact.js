@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { buildApiUrl } from '../api';
 import '../styles/Contact.css';
 
 function Contact() {
@@ -24,7 +25,7 @@ function Contact() {
     setStatus(null);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API}/api/contact`, {
+      const response = await fetch(buildApiUrl('/api/contact'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -33,6 +34,7 @@ function Contact() {
       });
 
       const data = await response.json();
+      console.log('[Contact DEBUG] response:', data);
 
       if (response.ok) {
         setStatus({ type: 'success', message: 'Message sent successfully!' });

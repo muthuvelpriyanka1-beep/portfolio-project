@@ -100,3 +100,32 @@
     flex-direction: column;
   }
 }
+
+.api-debug-banner {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.api-debug-banner.ok {
+  border-color: #22c55e;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.api-debug-banner.error {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.api-debug-banner.checking {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  color: #92400e;
+}
